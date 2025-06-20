@@ -24,7 +24,8 @@ const logoUrl = require("./assets/logo.jpeg");
 const AUTO_SLIDE_INTERVAL = 1500; // 1.5 seconds
 
 const LandingPage = () => {
-  const [seconds, setSeconds] = useState(5); // 20 sec timer, adjust as needed
+  const [displaySeconds, setDisplaySeconds] = useState(15); // Show 15 seconds on frontend
+  const [actualSeconds, setActualSeconds] = useState(5); // Actually redirect after 5 seconds
   const [startIndex, setStartIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
   const autoSlideRef = useRef();
@@ -36,14 +37,22 @@ const LandingPage = () => {
   }, []);
 
   useEffect(() => {
-    if (seconds === 0) {
+    if (actualSeconds === 0) {
       window.location.href = "https://t.me/+esb2J2_tds00Yzg1";
     }
     const timer = setInterval(() => {
-      setSeconds((sec) => (sec > 0 ? sec - 1 : 0));
+      setActualSeconds((sec) => (sec > 0 ? sec - 1 : 0));
     }, 1000);
     return () => clearInterval(timer);
-  }, [seconds]);
+  }, [actualSeconds]);
+
+  // Display timer effect - shows 15 seconds countdown
+  useEffect(() => {
+    const displayTimer = setInterval(() => {
+      setDisplaySeconds((sec) => (sec > 0 ? sec - 1 : 0));
+    }, 1000);
+    return () => clearInterval(displayTimer);
+  }, []);
 
   // Carousel logic
   const showPrev = () => {
@@ -81,7 +90,7 @@ const LandingPage = () => {
         <p>with<br /><span className="brand">⚡ Mina_talwar ⚡</span></p>
         <div className="timer-box">
           <span>Hurry Up!</span>
-          <div className="timer">00:00:{seconds.toString().padStart(2, "0")}</div>
+          <div className="timer">00:00:{displaySeconds.toString().padStart(2, "0")}</div>
         </div>
         <a href="https://t.me/+esb2J2_tds00Yzg1" target="_blank" rel="noopener noreferrer" className="join-btn">
           <span className="telegram-icon" aria-label="Telegram">
